@@ -548,13 +548,12 @@ actions:
         == ''Mindig'' and llm_result.action_data.media_type != ''radio'' or ''NA''
         }}'
     llm_target_data:
-      entity_id: >
-        "{% set players = llm_result.get('target_data', {}).get('players', []) %}
-        {% set players = players | join('|') if players is list else players %}
-        {% set names = player_names.split(', ') | select('search', players, ignorecase=true)
-        | list%}
-        {{\n  integration_entities('music_assistant') | expand | selectattr('name','in', names)
-        | map(attribute='entity_id') | select('search', '^media_player.') | list }}"
+      entity_id: '{% set players = llm_result.get(''target_data'', {}).get(''players'',
+        []) %} {% set players = players | join(''|'') if players is list else players
+        %} {% set names = player_names.split('', '') | select(''search'', players,
+        ignorecase=true) | list%} {{ integration_entities(''music_assistant'')
+        | expand | selectattr(''name'',''in'', names) | map(attribute=''entity_id'')
+        | select(''search'', ''^media_player.'') | list }}'
       area_id: '{% set areas = llm_result.get(''target_data'', {}).get(''areas'',
         []) %} {% set areas = areas | join(''|'') if areas is list else areas %} {{
         area_names.split('', '') | select(''search'', areas, ignorecase=true) | map(''area_id'')
