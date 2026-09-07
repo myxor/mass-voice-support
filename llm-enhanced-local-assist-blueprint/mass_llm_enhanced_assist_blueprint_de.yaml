@@ -50,8 +50,8 @@ blueprint:
     Alle Sätze müssen:
 
     * mit den Wörtern `Zufällig`, `Spiele ab` oder `Höre zu` beginnen, gefolgt von einer Anfrage, was Sie
-    abspielen möchten. Wenn Sie mit `Shuffle` beginnen, wird der Player, der die Anfrage abspielt, auch
-    Shuffle aktivieren, sonst wird Shuffle deaktiviert.
+    abspielen möchten. Wenn Sie mit `Zufällig` beginnen, wird der Player, der die Anfrage abspielt, auch
+    Zufällig aktivieren, sonst wird Zufällig deaktiviert.
 
     * dann optionally durch einen oder mehrere Bereichsnamen und/oder einen oder mehrere
     Gerätenamen gefolgt sein, auf denen die Musik abgespielt werden soll.
@@ -199,7 +199,7 @@ blueprint:
               multiple: false
           default: und
         no_target_response:
-          name: Keine Zielsantwort
+          name: Keine Zielantwort
           description: Assist gibt diese Antwort zurück, wenn kein Ziel bestimmt werden
             konnte und kein Standard-Player eingestellt ist
           selector:
