@@ -265,24 +265,12 @@ blueprint:
           selector:
             text:
               multiline: true
-              multiple: false
-          default: 'Sie sind ein KI-Prozess, der eine Musiksuchanfrage in
-            ein strukturiertes JSON-Format umwandelt. Für jede Anfrage müssen Sie spezifische
-            Details – wie Titel, Künstlernamen oder Albumnamen – recherchieren und bereitstellen, sofern diese nicht direkt
-            in der Anfrage erwähnt werden. Wenn die Anfrage beispielsweise lautet: „Spiele das neueste
-            Album von Foo Fighters ab“, solltest du den Titel des neuesten Albums recherchieren und
-            ihn in die JSON-Antwort aufnehmen. Wenn in der Anfrage nur ein Interpret,
-            ein Album oder eine Playlist angegeben ist, gib die entsprechenden Details an, ohne nicht näher spezifizierte
-            Angaben anzunehmen.
+          default: |-
+            Du bist ein KI-Prozess, der eine Musiksuchanfrage in ein strukturiertes JSON-Format umwandelt. Für jede Anfrage musst du spezifische Details – wie Titel, Künstlernamen oder Albumnamen – recherchieren und bereitstellen, sofern diese nicht direkt in der Anfrage erwähnt werden. Wenn die Anfrage beispielsweise lautet: "Spiele das neueste Album von Foo Fighters ab", solltest du den Titel des neuesten Albums recherchieren und ihn in die JSON-Antwort aufnehmen. Wenn in der Anfrage nur ein Interpret, ein Album oder eine Playlist angegeben ist, gib die entsprechenden Details an, ohne nicht näher spezifizierte Angaben anzunehmen.
 
-            Dies ist die vom Nutzer eingegebene Sprachbefehlsanfrage: „{{ trigger.sentence
-            }}“
+            Dies ist die vom Nutzer eingegebene Sprachbefehlsanfrage: "{{ trigger.sentence }}"
 
-
-            Hier ist das strukturierte JSON, das ich als Antwort erwarte: {„action_data“:
-            {„media_id“:„name“, „media_type“:„type“, „artist“:„name“, ‚album‘:„name“},
-            „media_description“: „Beschreibung des Mediums“, ‚target_data‘: {„areas“:
-            [„Bereichsname“], ‚players‘: [„playername“]}}'
+            Hier ist das strukturierte JSON, das ich als Antwort erwarte: {"action_data": {"media_id": "name", "media_type": "type", "artist": "name", "album": "name"}, "media_description": "Beschreibung des Mediums", "target_data": {"areas": ["Bereichsname"], "players": ["playername"]}}
         llm_prompt_media_type:
           name: Medientyp LLM-Prompt
           description: Erklärung zum "media_type"-Parameter im Ausgabedaten
@@ -290,25 +278,25 @@ blueprint:
             text:
               multiline: true
               multiple: false
-          default: 'Das Argument „media_type“ ist obligatorisch und muss immer angegeben werden,
+          default: 'Das Argument "media_type" ist obligatorisch und muss immer angegeben werden,
             auf jeden Fall!
 
-            „media_type“ kann nur einen von fünf verschiedenen Werten annehmen:
+            "media_type" kann nur einen von fünf verschiedenen Werten annehmen:
 
-            - „track“, wenn sich die Suche auf einen bestimmten Titel oder eine Liste von Titeln bezieht.
+            - "track", wenn sich die Suche auf einen bestimmten Titel oder eine Liste von Titeln bezieht.
 
-            - „album“, wenn sich die Suche auf ein Album oder eine Liste von Alben bezieht.
+            - "album", wenn sich die Suche auf ein Album oder eine Liste von Alben bezieht.
 
-            - „artist“, wenn sich die Suche auf einen Künstler bezieht.
+            - "artist", wenn sich die Suche auf einen Künstler bezieht.
 
-            - „playlist“, wenn die Suche speziell eine Wiedergabeliste betrifft.
+            - "playlist", wenn die Suche speziell eine Wiedergabeliste betrifft.
 
-            - „radio“, falls es sich bei der Suche um einen Radiosender handelt.
+            - "radio", falls es sich bei der Suche um einen Radiosender handelt.
 
-            „media_type“ ist obligatorisch und muss immer angegeben werden. Falls eine Anfrage
+            "media_type" ist obligatorisch und muss immer angegeben werden. Falls eine Anfrage
             keinem dieser Typen entspricht, beispielsweise wenn Musik aus einem bestimmten
-            Genre angefordert wird, verwende „track“ und gib eine Liste passender Titel
-            für den Parameter „media_id“ an.'
+            Genre angefordert wird, verwende "track" und gib eine Liste passender Titel
+            für den Parameter "media_id" an.'
         llm_prompt_media_id:
           name: Medien-ID LLM-Prompt
           description: Erklärung zum "media_id"-Parameter im Ausgabedaten
@@ -365,29 +353,22 @@ blueprint:
             text:
               multiline: true
               multiple: false
-          default: 'Für das „action_data“-Wörterbuch gibt es verschiedene Arten von Antworten.
-            Hier sind einige Beispiele:
+          default: |-
+            Für das "action_data"-Wörterbuch gibt es verschiedene Arten von Antworten. Hier sind einige Beispiele:
 
-            Nur ein Künstler >> {„action_data“:{„media_id“: „Name des Künstlers“, ‚media_type‘:„artist“}}.
+            Nur ein Künstler >> {"action_data": {"media_id": "Name des Künstlers", "media_type": "artist"}}
 
-            Ein Album eines Künstlers >> {„action_data“:{„media_id“: „Albumtitel“, ‚media_type‘: „album“,
-            „artist“: „Name des Künstlers“}}.
+            Ein Album eines Künstlers >> {"action_data": {"media_id": "Albumtitel", "media_type": "album", "artist": "Name des Künstlers"}}
 
-            Ein Titel eines Künstlers >> {„action_data“:{„media_id“: „Titel“, ‚media_type‘: „Titel“,
-            „artist“: „Name des Künstlers“}}.
+            Ein Titel eines Künstlers >> {"action_data": {"media_id": "Titel", "media_type": "track", "artist": "Name des Künstlers"}}
 
-            Nur ein Titel, wenn der Künstler unbekannt ist >> {„action_data“:{‚media_id‘: „Titelname“,
-            „media_type“: „Titel“}}.
+            Nur ein Titel, wenn der Künstler unbekannt ist >> {"action_data": {"media_id": "Titelname", "media_type": "track"}}
 
-            Nur eine Playlist, wenn die Anfrage eine bestimmte Playlist betrifft >> {„action_data“:{‚media_id‘:"Playlist-
-            Name„, ‚media_type‘:“Playlist"}}.
+            Nur eine Playlist, wenn die Anfrage eine bestimmte Playlist betrifft >> {"action_data": {"media_id": "Playlist-Name", "media_type": "playlist"}}
 
-            Mehrere Titel verschiedener Interpreten >> {„action_data“:{‚media_id‘: ["Name des Interpreten – Titel
-            des Songs„, “Name eines anderen Interpreten – Titel eines anderen Songs„, “Name eines anderen Interpreten
-            – Titel eines anderen Songs„], ‚media_type‘:“track"}}.
+            Mehrere Titel verschiedener Interpreten >> {"action_data": {"media_id": ["Interpret A - Titel A", "Interpret B - Titel B", "Interpret C - Titel C"], "media_type": "track"}}
 
-            Mehrere Titel desselben Künstlers >> {„action_data“:{„media_id“: [‚Titel‘, "Ein weiterer
-            Titel„], “artist„: “Künstlername„, ‚media_type‘:“track"}}'
+            Mehrere Titel desselben Künstlers >> {"action_data": {"media_id": ["Titel 1", "Titel 2"], "artist": "Künstlername", "media_type": "track"}}
         llm_prompt_media_description:
           name: Media Beschreibung LLM-Prompt
           description: Erklärung zum "media_description"-Teil des Ausgabedaten
@@ -458,7 +439,7 @@ blueprint:
 
             WICHTIG: Antworte AUSSCHLIESSLICH mit dem JSON-Objekt. Verwende KEINE Markdown-Codeblocks, KEINEN Begrüßungstext und KEINE Erklärungen.
             
-            Verwende im JSON AUSSCHLIESSLICH standardmäßige doppelte Anführungszeichen ("). Nutze niemals typografische oder deutsche Anführungszeichen („ ” ‚ ’).
+            Verwende im JSON AUSSCHLIESSLICH standardmäßige doppelte Anführungszeichen ("). Nutze niemals typografische oder gekrümmte Anführungszeichen.
         llm_prompt:
           name: Legacy LLM-Prompt-Einstellung
           description: >-
